@@ -23,12 +23,12 @@ jobs:
         - name: Checkout library
           uses: actions/checkout@v3
         - name: Build docker image
-          run : docker build -t simpleapp .
+          run : docker build -t simpleapp:my-image .
         - name: list the docker
           run : docker ps
         - name: push to docker
-          run : aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
+          run : aws ecr get-login-password --region region | docker login --username AWS --password-stdin 056453723006.dkr.ecr.region.amazonaws.com
         - name: docker taging
-          run : docker tag e9ae3c220b23 aws_account_id.dkr.ecr.region.amazonaws.com/my-repo:tag
+          run : docker tag simpleapp:my-image 056453723006.dkr.ecr.region.amazonaws.com/my-repo:tag
         - name: pushing to ecr
-          run : docker push aws_account_id.dkr.ecr.region.amazonaws.com/my-repo:tag
+          run : docker push 056453723006.dkr.ecr.region.amazonaws.com/my-repo:tag
