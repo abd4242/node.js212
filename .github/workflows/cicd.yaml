@@ -1,0 +1,28 @@
+name: CICD Pipeline
+on: push
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout library
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - name: Install PM2 on the runner
+        run : npm install pm2@latest -g
+      - name: start the app
+        run : pm2 start app.js
+      - name: Simple Smoke Test
+        run : newman run simple-nodejs-smoke-test.postman_collection.json
+
+  docker-image-ecr:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout library
+          uses: actions/checkout@v3
+        - name: Build docker image
+          run : docker build -t simpleapp .
+        - name: list the directories
+          run : ls -al
